@@ -98,6 +98,7 @@ var SimpleScheduler = (function() {
             switch(_popupMode.update.type) {
                 case 'popover':
                     var id = $(this).closest('.popover').find('[name=id]').val();
+                    var event = _eventsMap[id];
 
                     setTimeout(function () {
                         _$target.popover({
@@ -118,32 +119,34 @@ var SimpleScheduler = (function() {
 
                                 } else {
                                     template = [
-                                        '<div class="form-group">',
-                                            '<label for="exampleTextarea">제목</label>',
-                                            '<input type="text" class="form-control" data-schedule="title">',
-                                        '</div>',
-                                        '<div class="form-group">',
-                                            '<label for="exampleTextarea">내용</label>',
-                                            '<textarea data-schedule="content" class="form-control" placeholder="일정을 입력하세요." ></textarea>',
-                                        '</div>',
-                                        '<div class="form-group">',
-                                            '<div class="row">',
-                                                '<div class="col-sm-6">',
-                                                    '<input type="text" class="start_date" name="start_date" style="width:100px" readonly="true" />',
-                                                '</div>',
-                                                '<div class="col-sm-6">',
-                                                    '<input type="text" class="end_date" name="end_date" style="width:100px" readonly="true" />',
+                                        '<form data-schedule="form">',
+                                            '<div class="form-group">',
+                                                '<label for="exampleTextarea">제목</label>',
+                                                '<input type="text" class="form-control" name="title" data-schedule="title" value="' + event.title + '">',
+                                            '</div>',
+                                            '<div class="form-group">',
+                                                '<label for="exampleTextarea">내용</label>',
+                                                '<textarea data-schedule="content" name="content" class="form-control" placeholder="일정을 입력하세요." >' + event.content + '</textarea>',
+                                            '</div>',
+                                            '<div class="form-group">',
+                                                '<div class="row">',
+                                                    '<div class="col-sm-6">',
+                                                        '<input type="text" class="start_date" name="start_date" style="width:100px" value="' + event.start || '' + '" readonly="true" />',
+                                                    '</div>',
+                                                    '<div class="col-sm-6">',
+                                                        '<input type="text" class="end_date" name="end_date" style="width:100px" value="' + event.end || '' + '" readonly="true" />',
+                                                    '</div>',
                                                 '</div>',
                                             '</div>',
-                                        '</div>',
-                                        '<div class="form-group">',
-                                            '<label class="">색상</label>',
-                                            '<div data-selector="colorpicker" data-format="alias" class="input-group colorpicker-component">',
-                                                '<span class="input-group-addon"><i></i></span>',
-                                                '<input type="text" class="form-control" name="color" />',
+                                            '<div class="form-group">',
+                                                '<label class="">색상</label>',
+                                                '<div data-selector="colorpicker" data-format="alias" class="input-group colorpicker-component">',
+                                                    '<span class="input-group-addon"><i></i></span>',
+                                                    '<input type="text" class="form-control" name="color" value="' + event.color + '" />',
+                                                '</div>',
                                             '</div>',
-                                        '</div>',
-                                        '<input type="hidden" name="id" value="' + id + '" />',
+                                            '<input type="hidden" name="id" value="' + id + '" />',
+                                        '</form>',
                                     ].join('\n');
                                 }
 
@@ -217,6 +220,8 @@ var SimpleScheduler = (function() {
                     break;
 
                 case 'modal':
+                    //var id = $('').find('[name=id]').val();
+                    var event = _eventsMap[id];
                     var template = '';
 
                     if(_popupMode.add.hasOwnProperty('template')) {
@@ -228,32 +233,34 @@ var SimpleScheduler = (function() {
 
                     } else {
                         template = [
-                            '<div class="form-group">',
-                                '<label for="exampleTextarea">제목</label>',
-                                '<input type="text" class="form-control" name="title" data-schedule="title">',
-                            '</div>',
-                            '<div class="form-group">',
-                                '<label for="exampleTextarea">내용</label>',
-                                '<textarea data-schedule="content" name="content" class="form-control" placeholder="일정을 입력하세요." ></textarea>',
-                            '</div>',
-                            '<div class="form-group">',
-                                '<div class="row">',
-                                    '<div class="col-sm-6">',
-                                        '<input type="text" class="form-control start_date" name="start_date" readonly="true" />',
-                                    '</div>',
-                                    '<div class="col-sm-6">',
-                                        '<input type="text" class="form-control end_date" name="end_date" readonly="true" />',
+                            '<form data-schedule="form">',
+                                '<div class="form-group">',
+                                    '<label for="exampleTextarea">제목</label>',
+                                    '<input type="text" class="form-control" name="title" data-schedule="title">',
+                                '</div>',
+                                '<div class="form-group">',
+                                    '<label for="exampleTextarea">내용</label>',
+                                    '<textarea data-schedule="content" name="content" class="form-control" placeholder="일정을 입력하세요." ></textarea>',
+                                '</div>',
+                                '<div class="form-group">',
+                                    '<div class="row">',
+                                        '<div class="col-sm-6">',
+                                            '<input type="text" class="form-control start_date" name="start_date" readonly="true" />',
+                                        '</div>',
+                                        '<div class="col-sm-6">',
+                                            '<input type="text" class="form-control end_date" name="end_date" readonly="true" />',
+                                        '</div>',
                                     '</div>',
                                 '</div>',
-                            '</div>',
-                            '<div class="form-group">',
-                                '<label class="">색상</label>',
-                                '<div data-selector="colorpicker" data-format="alias" class="input-group colorpicker-component">',
-                                    '<span class="input-group-addon"><i></i></span>',
-                                    '<input type="text" class="form-control" name="color" />',
+                                '<div class="form-group">',
+                                    '<label class="">색상</label>',
+                                    '<div data-selector="colorpicker" data-format="alias" class="input-group colorpicker-component">',
+                                        '<span class="input-group-addon"><i></i></span>',
+                                        '<input type="text" class="form-control" name="color" />',
+                                    '</div>',
                                 '</div>',
-                            '</div>',
-                            '<input type="hidden" name="id" value="' + id + '" />',
+                                '<input type="hidden" name="id" value="' + id + '" />',
+                            '</form>',
                         ].join('\n');
                     }
 
@@ -324,7 +331,14 @@ var SimpleScheduler = (function() {
         });
 
         $(document).on('click', '[data-schedule="btnUpdate"]', function () {
+            var fields = $('[data-schedule=form]:visible').serializeArray();
+            var data = {};
 
+            fields.forEach(function (field) {
+                data[field.name] = field.value;
+            });
+
+            _this.updateEvent(data.id, data);
         });
 
         //$('[data-schedule=content]').on('keyup', _this.setContent);
@@ -858,31 +872,33 @@ var SimpleScheduler = (function() {
 
                             } else {
                                 template = [
-                                    '<div class="form-group">',
-                                        '<label for="exampleTextarea">제목</label>',
-                                        '<input type="text" class="form-control" data-schedule="title">',
-                                    '</div>',
-                                    '<div class="form-group">',
-                                        '<label for="exampleTextarea">내용</label>',
-                                        '<textarea data-schedule="content" class="form-control" placeholder="일정을 입력하세요." ></textarea>',
-                                    '</div>',
-                                    '<div class="form-group">',
-                                        '<div class="row">',
-                                            '<div class="col-sm-6">',
-                                                '<input type="text" class="start_date" name="start_date" style="width:100px" readonly="true" />',
-                                            '</div>',
-                                            '<div class="col-sm-6">',
-                                                '<input type="text" class="end_date" name="end_date" style="width:100px" readonly="true" />',
+                                    '<form data-schedule="form">',
+                                        '<div class="form-group">',
+                                            '<label for="exampleTextarea">제목</label>',
+                                            '<input type="text" class="form-control" name="title" data-schedule="title">',
+                                        '</div>',
+                                        '<div class="form-group">',
+                                            '<label for="exampleTextarea">내용</label>',
+                                            '<textarea data-schedule="content" name="content" class="form-control" placeholder="일정을 입력하세요." ></textarea>',
+                                        '</div>',
+                                        '<div class="form-group">',
+                                            '<div class="row">',
+                                                '<div class="col-sm-6">',
+                                                    '<input type="text" class="start_date" name="start_date" style="width:100px" readonly="true" />',
+                                                '</div>',
+                                                '<div class="col-sm-6">',
+                                                    '<input type="text" class="end_date" name="end_date" style="width:100px" readonly="true" />',
+                                                '</div>',
                                             '</div>',
                                         '</div>',
-                                    '</div>',
-                                    '<div class="form-group">',
-                                        '<label class="">색상</label>',
-                                        '<div data-selector="colorpicker" data-format="alias" class="input-group colorpicker-component">',
-                                            '<span class="input-group-addon"><i></i></span>',
-                                            '<input type="text" class="form-control" name="color" />',
+                                        '<div class="form-group">',
+                                            '<label class="">색상</label>',
+                                            '<div data-selector="colorpicker" data-format="alias" class="input-group colorpicker-component">',
+                                                '<span class="input-group-addon"><i></i></span>',
+                                                '<input type="text" class="form-control" name="color" />',
+                                            '</div>',
                                         '</div>',
-                                    '</div>',
+                                    '</form>',
                                 ].join('\n');
                             }
 
@@ -964,31 +980,33 @@ var SimpleScheduler = (function() {
 
                     } else {
                         template = [
-                            '<div class="form-group">',
-                                '<label for="exampleTextarea">제목</label>',
-                                '<input type="text" class="form-control" name="title" data-schedule="title">',
-                            '</div>',
-                            '<div class="form-group">',
-                                '<label for="exampleTextarea">내용</label>',
-                                '<textarea data-schedule="content" name="content" class="form-control" placeholder="일정을 입력하세요." ></textarea>',
-                            '</div>',
-                            '<div class="form-group">',
-                                '<div class="row">',
-                                    '<div class="col-sm-6">',
-                                        '<input type="text" class="form-control start_date" name="start_date" readonly="true" />',
-                                    '</div>',
-                                    '<div class="col-sm-6">',
-                                        '<input type="text" class="form-control end_date" name="end_date" readonly="true" />',
+                            '<form data-schedule="form">',
+                                '<div class="form-group">',
+                                    '<label for="exampleTextarea">제목</label>',
+                                    '<input type="text" class="form-control" name="title" data-schedule="title">',
+                                '</div>',
+                                '<div class="form-group">',
+                                    '<label for="exampleTextarea">내용</label>',
+                                    '<textarea data-schedule="content" name="content" class="form-control" placeholder="일정을 입력하세요." ></textarea>',
+                                '</div>',
+                                '<div class="form-group">',
+                                    '<div class="row">',
+                                        '<div class="col-sm-6">',
+                                            '<input type="text" class="form-control start_date" name="start_date" readonly="true" />',
+                                        '</div>',
+                                        '<div class="col-sm-6">',
+                                            '<input type="text" class="form-control end_date" name="end_date" readonly="true" />',
+                                        '</div>',
                                     '</div>',
                                 '</div>',
-                            '</div>',
-                            '<div class="form-group">',
-                                '<label class="">색상</label>',
-                                '<div data-selector="colorpicker" data-format="alias" class="input-group colorpicker-component">',
-                                    '<span class="input-group-addon"><i></i></span>',
-                                    '<input type="text" class="form-control" name="color" />',
+                                '<div class="form-group">',
+                                    '<label class="">색상</label>',
+                                    '<div data-selector="colorpicker" data-format="alias" class="input-group colorpicker-component">',
+                                        '<span class="input-group-addon"><i></i></span>',
+                                        '<input type="text" class="form-control" name="color" />',
+                                    '</div>',
                                 '</div>',
-                            '</div>',
+                            '</form>',
                         ].join('\n');
                     }
 
